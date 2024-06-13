@@ -29,6 +29,8 @@ SELECTION-SCREEN END OF BLOCK tab_block.
 INITIALIZATION.
   tab1 = 'Dados Vôo'.
   tab2 = 'Dados Cliente'.
+  tab_block-activetab = 'COMM1'.
+  tab_block-dynnr = 110.
 
 START-OF-SELECTION.
 
@@ -39,6 +41,7 @@ START-OF-SELECTION.
       AND connid    IN @s_connid
       AND agencynum IN @s_agency
       AND passname  IN @s_psname.
+
 
 CALL METHOD cl_salv_table=>factory
   IMPORTING
