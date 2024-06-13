@@ -8,14 +8,14 @@ REPORT Z_ABAS_TELA.
 TABLES: sbook.
 
 SELECTION-SCREEN BEGIN OF SCREEN 110 AS SUBSCREEN.
-  SELECTION-SCREEN BEGIN OF BLOCK b1 WITH FRAME TITLE text-001.
+  SELECTION-SCREEN BEGIN OF BLOCK b1 WITH FRAME TITLE TEXT-001.
     SELECT-OPTIONS: s_carrid FOR sbook-carrid NO INTERVALS,
                     s_connid FOR sbook-connid NO INTERVALS.
   SELECTION-SCREEN END OF BLOCK b1.
 SELECTION-SCREEN END OF SCREEN 110.
 
 SELECTION-SCREEN BEGIN OF SCREEN 120 AS SUBSCREEN.
-  SELECTION-SCREEN BEGIN OF BLOCK b2 WITH FRAME TITLE text-002.
+  SELECTION-SCREEN BEGIN OF BLOCK b2 WITH FRAME TITLE TEXT-002.
     SELECT-OPTIONS: s_agency FOR sbook-agencynum NO INTERVALS,
                     s_psname FOR sbook-passname.
   SELECTION-SCREEN END OF BLOCK b2.
@@ -27,25 +27,25 @@ SELECTION-SCREEN BEGIN OF TABBED BLOCK tab_block FOR 13 LINES.
 SELECTION-SCREEN END OF BLOCK tab_block.
 
 INITIALIZATION.
-  tab1 = 'Dados Vôo'(010).
-  tab2 = 'Dados Cliente'(011).
+  tab1 = 'Dados Vôo'.
+  tab2 = 'Dados Cliente'.
 
 START-OF-SELECTION.
 
-SELECT carrid, connid, agencynum, passname
-  FROM sbook
-  INTO TABLE @DATA(lt_sbook)
-    WHERE carrid  IN @s_carrid
-    AND connid    IN @s_connid
-    AND agencynum IN @s_agency
-    AND passname  IN @s_psname.
+  SELECT carrid, connid, agencynum, passname
+    FROM sbook
+    INTO TABLE @DATA(lt_sbook)
+    WHERE carrid    IN @s_carrid
+      AND connid    IN @s_connid
+      AND agencynum IN @s_agency
+      AND passname  IN @s_psname.
 
-cl_salv_table=>factory(
+CALL METHOD cl_salv_table=>factory
   IMPORTING
-    r_salv_table = DATA(lo_alv)
+    r_salv_table   = DATA(lo_alv)
   CHANGING
-    t_table = lt_sbook[]
-).
+    t_table        = lt_sbook[].
+
 DATA(lo_functions) = lo_alv->get_functions( ).
 lo_functions->set_all( ).
 lo_alv->display( ).
